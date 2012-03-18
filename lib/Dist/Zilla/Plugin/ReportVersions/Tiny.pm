@@ -132,9 +132,7 @@ sub generate_eval_stubs {
 
     return join qq{\n}, map {
         my $ver = $modules->{$_};
-        # The string comparison is important: it stops us treating "0.0.6" as
-        # equal to "0"; see CPAN RT #63912
-        $ver = 'any version' if $ver eq '0';
+        $ver = 'any version' if version->parse($ver) == 0;
         sprintf q[eval { $v .= pmver('%s','%s') };],  $_, $ver ;
     } sort keys %{$modules};
 };
